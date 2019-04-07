@@ -26,6 +26,8 @@ private:
     std::string vipNumber;
 
     std::unique_ptr<std::map<ProductionA, double>> ProductionAs;
+
+    bool _setPassword(std::string newPassword);
 };
 
 
