@@ -24,6 +24,10 @@ public:
 
     double getAllMoney() const override ;
 
+    void addMoney(double newMoney) override ;
+
+    void subMoney(double someMoney) override ;
+
 private:
     double profit;
 
@@ -31,7 +35,6 @@ private:
 
 };
 
-/*
 
 class ProductionB : public Product {
 public:
@@ -45,12 +48,17 @@ public:
 
     double getAllMoney() const;
 
+    void addMoney(double newMoney) override ;
+
+    void subMoney(double someMoney) override ;
+
 private:
     double profit;
 
     double percent;
 
 };
+
 
 class ProductionC : public Product {
 public:
@@ -64,24 +72,9 @@ public:
 
     double getAllMoney() const;
 
-private:
-    double profit;
+    void addMoney(double newMoney) override ;
 
-    double percent;
-
-};
-
-class ProductionD : public Product {
-public:
-    ProductionD(std::string productName, double money, unsigned int startYear, unsigned int nowYear);
-
-    ~ProductionD();
-
-    void work();
-
-    double getProfitByYear(unsigned short year);
-
-    double getAllMoney() const;
+    void subMoney(double someMoney) override ;
 
 private:
     double profit;
@@ -90,5 +83,5 @@ private:
 
 };
 
-*/
+
 #endif //BANK_PRODUCTIONS_H
