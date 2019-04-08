@@ -35,19 +35,6 @@ void Account::setPassword(string newPassword) {
 
 }
 
-bool judge(string password) {
-    std::size_t len = password.length();
-    if (len != 6)
-        return false;
-    else {
-        for (char x : password) {
-            if (x > '9' || x < '0')
-                return false;
-        }
-
-        return true;
-    }
-}
 
 bool Account::_setPassword(std::string newPassword) {
     bool result = judge(newPassword);
