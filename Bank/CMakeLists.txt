@@ -17,4 +17,4 @@ add_executable(Bank
         base/Production/product.h
         base/Production/productions.cpp
         base/Production/productions.h
-        main.cpp)
+        main.cpp surface/surface.cpp surface/surface.h)
