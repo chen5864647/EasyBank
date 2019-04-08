@@ -18,6 +18,7 @@ public:
     void setPassword(std::string newPassword);
 
 private:
+    bool _setPassword(std::string newPassword);
 
 };
 
