@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <utility>
 
 #include "vipaccount.h"
 
@@ -13,6 +14,7 @@ using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
+using std::pair;
 
 VipAccount::VipAccount(string userName,
         double money,
@@ -25,25 +27,61 @@ VipAccount::VipAccount(string userName,
     cerr << "This is a VIP account..." << endl;
 
     if (!this->ProductionAs.release())
-        this->ProductionAs.reset(new std::map<ProductionA, double >);
+        this->ProductionAs.reset(new map<string, ProductionA>);
     else
         this->ProductionAs.reset();
+
+    if (!this->ProductionBs.release())
+        this->ProductionBs.reset(new map<string, ProductionB>);
+    else
+        this->ProductionBs.reset();
+
+    if (!this->ProductionCs.release())
+        this->ProductionCs.reset(new map<string, ProductionC>);
+    else
+        this->ProductionCs.reset();
 
 }
 
 void VipAccount::getAllMoney() {
 
-    auto waitProfitAndMoney = *(this->ProductionAs);
+    auto waitProfitAndMoneyA = *(this->ProductionAs);
 
-    auto item = waitProfitAndMoney.begin();
+    auto itemA = waitProfitAndMoneyA.begin();
 
-    double ansMoney = 0;
-    ansMoney += this->money;
+    double ansMoneyA = 0;
+    ansMoneyA += this->money;
 
-    while (item != waitProfitAndMoney.end()) {
-        ProductionA temp = item->first;
-        ansMoney += temp.getAllMoney();
+    while (itemA != waitProfitAndMoneyA.end()) {
+        ProductionA temp = itemA->second;
+        ansMoneyA += temp.getAllMoney();
     }
+
+    auto waitProfitAndMoneyB = *(this->ProductionBs);
+
+    auto itemB = waitProfitAndMoneyB.begin();
+
+    double ansMoneyB = 0;
+    ansMoneyB += this->money;
+
+    while (itemB != waitProfitAndMoneyB.end()) {
+        ProductionB temp = itemB->second;
+        ansMoneyB += temp.getAllMoney();
+    }
+
+    auto waitProfitAndMoneyC = *(this->ProductionCs);
+
+    auto itemC = waitProfitAndMoneyC.begin();
+
+    double ansMoneyC = 0;
+    ansMoneyC += this->money;
+
+    while (itemC != waitProfitAndMoneyC.end()) {
+        ProductionC temp = itemC->second;
+        ansMoneyC += temp.getAllMoney();
+    }
+
+    auto ansMoney = ansMoneyA + ansMoneyB + ansMoneyC;
 
     cout << "You take out all the money!" << endl;
     cout << "In all:" << endl;
@@ -51,6 +89,8 @@ void VipAccount::getAllMoney() {
 
     this->money = 0;
     this->ProductionAs.release();
+    this->ProductionBs.release();
+    this->ProductionCs.release();
 
 }
 
@@ -59,9 +99,13 @@ VipAccount::~VipAccount() {
     bool flag = false;
 
     if (this->money == 0) {
-        auto waitProfitAndMoney = *(this->ProductionAs);
-        long productions =  waitProfitAndMoney.size();
-        if (productions == 0)
+        auto waitProfitAndMoneyA = *(this->ProductionAs);
+        long productionsA = waitProfitAndMoneyA.size();
+        auto waitProfitAndMoneyB = *(this->ProductionBs);
+        long productionsB = waitProfitAndMoneyB.size();
+        auto waitProfitAndMoneyC = *(this->ProductionCs);
+        long productionsC = waitProfitAndMoneyC.size();
+        if (productionsA == 0 && productionsB == 0 && productionsC == 0)
             flag = true;
         else
             flag = false;
@@ -98,11 +142,10 @@ VipAccount::~VipAccount() {
         if (getMoney) {
             cout << "You have gotten your money!" << endl;
             this->getAllMoney();
-            cout << "You delete your account!" << endl;
         }
     }
-    else
-        cout << "You delete your account!" << endl;
+
+    cout << "You delete your account!" << endl;
 
 }
 
@@ -126,5 +169,129 @@ bool VipAccount::_setPassword(std::string newPassword) {
     else {
         this->password = newPassword;
         return true;
+    }
+}
+
+void VipAccount::setVipNumber(string newVipNumber) {
+
+    this->vipNumber = newVipNumber;
+
+}
+
+
+void VipAccount::addProduction(string productionName, double money, Production productionClass) {
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+    if (productionClass == ProdA) {
+        ProductionA productionA(productionName, money, this->startYear, 2019);
+
+        string namer = productionName;
+        auto item = productionas.find(namer);
+        if (item != productionas.end()) {
+            ProductionA &nowPro = item->second;
+            nowPro.addMoney(money);
+            cout << "You have alreay gotten this productionA!" << endl;
+            cout << "Now! You have push more " << money << " money in it!" << endl;
+        }
+        else {
+            productionas.insert(pair<string, ProductionA>(productionName, productionA));
+            cout << "You purchase a new productionA now!" << endl;
+            cout << "You have " << money << " money in it!" << endl;
+        }
+
+    }
+    else if (productionClass == ProdB) {
+        ProductionB productionB(productionName, money, this->startYear, 2019);
+
+        string namer = productionName;
+        auto item = productionbs.find(namer);
+        if (item != productionbs.end()) {
+            ProductionB &nowPro = item->second;
+            nowPro.addMoney(money);
+            cout << "You have alreay gotten this productionB!" << endl;
+            cout << "Now! You have push more " << money << " money in it!" << endl;
+        }
+        else {
+            productionbs.insert(pair<string, ProductionB>(productionName, productionB));
+            cout << "You purchase a new productionB now!" << endl;
+            cout << "You have " << money << " money in it!" << endl;
+        }
+
+    }
+    else if (productionClass == ProdC) {
+        ProductionC productionC(productionName, money, this->startYear, 2019);
+
+        string namer = productionName;
+        auto item = productioncs.find(namer);
+        if (item != productioncs.end()) {
+            ProductionC &nowPro = item->second;
+            nowPro.addMoney(money);
+            cout << "You have alreay gotten this productionC!" << endl;
+            cout << "Now! You have push more " << money << " money in it!" << endl;
+        }
+        else {
+            productioncs.insert(pair<string, ProductionC>(productionName, productionC));
+            cout << "You purchase a new productionC now!" << endl;
+            cout << "You have " << money << " money in it!" << endl;
+        }
+    }
+}
+
+void VipAccount::addProductionA(string productionName, double money) {
+    auto &productionas = *(this->ProductionAs);
+    ProductionA productionA(productionName, money, this->startYear, 2019);
+
+    string namer = productionName;
+    auto item = productionas.find(namer);
+    if (item != productionas.end()) {
+        ProductionA &nowPro = item->second;
+        nowPro.addMoney(money);
+        cout << "You have alreay gotten this productionA!" << endl;
+        cout << "Now! You have push more " << money << " money in it!" << endl;
+    }
+    else {
+        productionas.insert(pair<string, ProductionA>(productionName, productionA));
+        cout << "You purchase a new productionA now!" << endl;
+        cout << "You have " << money << " money in it!" << endl;
+    }
+}
+
+void VipAccount::addProductionB(string productionName, double money) {
+    auto &productionbs = *(this->ProductionBs);
+    ProductionB productionB(productionName, money, this->startYear, 2019);
+
+    string namer = productionName;
+    auto item = productionbs.find(namer);
+    if (item != productionbs.end()) {
+        ProductionB &nowPro = item->second;
+        nowPro.addMoney(money);
+        cout << "You have alreay gotten this productionB!" << endl;
+        cout << "Now! You have push more " << money << " money in it!" << endl;
+    }
+    else {
+        productionbs.insert(pair<string, ProductionB>(productionName, productionB));
+        cout << "You purchase a new productionB now!" << endl;
+        cout << "You have " << money << " money in it!" << endl;
+    }
+}
+
+void VipAccount::addProductionC(string productionName, double money) {
+    auto &productioncs = *(this->ProductionCs);
+    ProductionC productionC(productionName, money, this->startYear, 2019);
+
+    string namer = productionName;
+    auto item = productioncs.find(namer);
+    if (item != productioncs.end()) {
+        ProductionC &nowPro = item->second;
+        nowPro.addMoney(money);
+        cout << "You have alreay gotten this productionC!" << endl;
+        cout << "Now! You have push more " << money << " money in it!" << endl;
+    }
+    else {
+        productioncs.insert(pair<string, ProductionC>(productionName, productionC));
+        cout << "You purchase a new productionC now!" << endl;
+        cout << "You have " << money << " money in it!" << endl;
     }
 }
