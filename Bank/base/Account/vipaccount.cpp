@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <utility>
+#include <array>
+#include <algorithm>
 
 #include "vipaccount.h"
 
@@ -15,6 +17,8 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::pair;
+using std::fill;
+using std::array;
 
 VipAccount::VipAccount(string userName,
         double money,
@@ -160,7 +164,7 @@ void VipAccount::setPassword(string newPassword) {
     }
 }
 
-bool VipAccount::_setPassword(std::string newPassword) {
+bool VipAccount::_setPassword(string newPassword) {
     bool flag;
 
     flag = judge(newPassword);
@@ -294,4 +298,302 @@ void VipAccount::addProductionC(string productionName, double money) {
         cout << "You purchase a new productionC now!" << endl;
         cout << "You have " << money << " money in it!" << endl;
     }
+}
+
+void VipAccount::getProductionByName(string productionName) {
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    array<bool, 3> vis;
+    fill(vis.begin(), vis.end(), false);
+
+    auto itemA = productionas.find(productionName);
+    if (itemA != productionas.end()) {
+        double temp_money = 0;
+        temp_money = itemA->second.getAllMoney();
+
+        this->money += temp_money;
+        productionas.erase(itemA);
+        vis[0] = true;
+    }
+
+    auto itemB = productionbs.find(productionName);
+    if (itemB != productionbs.end()) {
+        double temp_money = 0;
+        temp_money = itemB->second.getAllMoney();
+
+        this->money += temp_money;
+        productionbs.erase(itemB);
+        vis[1] = true;
+    }
+
+    auto itemC = productioncs.find(productionName);
+    if (itemC != productioncs.end()) {
+        double temp_money = 0;
+        temp_money = itemC->second.getAllMoney();
+
+        this->money += temp_money;
+        productioncs.erase(itemC);
+        vis[2] = true;
+    }
+
+    if (vis[0])
+        cout << "You get the productionA!" << endl;
+    if (vis[1])
+        cout << "You get the productionB!" << endl;
+    if (vis[2])
+        cout << "You get the productionC!" << endl;
+
+}
+
+void VipAccount::getProductionByClass(Production productionClass) {
+    unsigned short count = 0;
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    double ans_money = 0;
+
+    if (productionClass == ProdA) {
+        auto item = productionas.begin();
+        while (item != productionas.end())
+            ans_money += (item->second).getAllMoney();
+
+        count = productionas.size();
+
+        while (!productionas.empty())
+            productionas.clear();
+
+    }
+    else if (productionClass == ProdB) {
+        auto item = productionbs.begin();
+        while (item != productionbs.end())
+            ans_money += (item->second).getAllMoney();
+
+        count = productionbs.size();
+
+        while (!productionbs.empty())
+            productionbs.clear();
+    }
+    else if (productionClass == ProdC) {
+        auto item = productioncs.begin();
+        while (item != productioncs.end())
+            ans_money += (item->second).getAllMoney();
+
+        count = productioncs.size();
+
+        while (!productioncs.empty())
+            productioncs.clear();
+    }
+
+    this->money += ans_money;
+
+    cout << "You have gotten " << count << " productions!" << endl;
+    cout << "You get " << ans_money << " money!" << endl;
+
+}
+
+void VipAccount::getAllProduction() {
+    unsigned short count = 0;
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    double ansA = 0, ansB = 0, ansC = 0;
+
+    auto itemA = productionas.begin();
+    while (itemA != productionas.end()) {
+        auto &temp_productiona = itemA->second;
+        ansA += temp_productiona.getAllMoney();
+        count++;
+    }
+
+    while (!productionas.empty())
+        productionas.clear();
+
+    auto itemB = productionbs.begin();
+    while (itemB != productionbs.end()) {
+        auto &temp_productionb = itemB->second;
+        ansB += temp_productionb.getAllMoney();
+        count++;
+    }
+
+    while (!productionbs.empty())
+        productionbs.clear();
+
+    auto itemC = productioncs.begin();
+    while (itemC != productioncs.end()) {
+        auto &temp_productionc = itemC->second;
+        ansC += temp_productionc.getAllMoney();
+        count++;
+    }
+
+    while (!productioncs.empty())
+        productioncs.clear();
+
+    double ans = ansA + ansB + ansC;
+
+    cout << "You have gotten all the production!" << endl;
+    cout << "In all : " << count << (count > 1 ? "productions..." : "producion...") << endl;
+    cout << "In all : " << ans << " money!" << endl;
+
+}
+
+void VipAccount::deleteProductionByName(string productionName) {
+
+    unsigned short count = 0;
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    double ansA = 0, ansB = 0, ansC = 0;
+
+    auto itemA = productionas.begin();
+    while (itemA != productionas.end()) {
+        auto &temp_productiona = itemA->second;
+        ansA += temp_productiona.getAllMoney();
+        count++;
+    }
+
+    while (!productionas.empty())
+        productionas.clear();
+
+    auto itemB = productionbs.begin();
+    while (itemB != productionbs.end()) {
+        auto &temp_productionb = itemB->second;
+        ansB += temp_productionb.getAllMoney();
+        count++;
+    }
+
+    while (!productionbs.empty())
+        productionbs.clear();
+
+    auto itemC = productioncs.begin();
+    while (itemC != productioncs.end()) {
+        auto &temp_productionc = itemC->second;
+        ansC += temp_productionc.getAllMoney();
+        count++;
+    }
+
+    while (!productioncs.empty())
+        productioncs.clear();
+
+    double ans = ansA + ansB + ansC;
+    this->money += ans;
+
+    cout << "You have gotten all the production!" << endl;
+    cout << "In all : " << count << (count > 1 ? "productions..." : "producion...") << endl;
+    cout << "In all : " << ans << " money!" << endl;
+}
+
+void VipAccount::deleteProductionByClass(Production productionClass) {
+    unsigned short count = 0;
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    double ansA = 0, ansB = 0, ansC = 0;
+
+    if (productionClass == ProdA) {
+
+        auto itemA = productionas.begin();
+        while (itemA != productionas.end()) {
+            auto &temp_productiona = itemA->second;
+            ansA += temp_productiona.getAllMoney();
+            count++;
+        }
+
+        while (!productionas.empty())
+            productionas.clear();
+
+        cout << "You delete all the ProductionA!" << endl;
+        cout << "In all : " << count << (count > 1 ? "productions" : "production") << endl;
+        cout << "In all : " << ansA << " money!" << endl;
+
+    }
+    else if (productionClass == ProdB) {
+        auto itemB = productionbs.begin();
+        while (itemB != productionbs.end()) {
+            auto &temp_productionb = itemB->second;
+            ansB += temp_productionb.getAllMoney();
+            count++;
+        }
+
+        while (!productionbs.empty())
+            productionbs.clear();
+
+        cout << "You delete all the ProductionB!" << endl;
+        cout << "In all : " << count << (count > 1 ? "productions" : "production") << endl;
+        cout << "In all : " << ansB << " money!" << endl;
+
+    }
+    else if (productionClass == ProdC) {
+        auto itemC = productioncs.begin();
+        while (itemC != productioncs.end()) {
+            auto &temp_productionc = itemC->second;
+            ansC += temp_productionc.getAllMoney();
+            count++;
+        }
+
+        while (!productioncs.empty())
+            productioncs.clear();
+
+        cout << "You delete all the ProductionC!" << endl;
+        cout << "In all : " << count << (count > 1 ? "productions" : "production") << endl;
+        cout << "In all : " << ansC << " money!" << endl;
+
+    }
+}
+
+void VipAccount::deleteAllProduction() {
+
+    unsigned short count = 0;
+
+    auto &productionas = *(this->ProductionAs);
+    auto &productionbs = *(this->ProductionBs);
+    auto &productioncs = *(this->ProductionCs);
+
+    double ansA = 0, ansB = 0, ansC = 0;
+
+    auto itemA = productionas.begin();
+    while (itemA != productionas.end()) {
+        auto &temp_productiona = itemA->second;
+        ansA += temp_productiona.getAllMoney();
+        count++;
+    }
+
+    while (!productionas.empty())
+        productionas.clear();
+
+    auto itemB = productionbs.begin();
+    while (itemB != productionbs.end()) {
+        auto &temp_productionb = itemB->second;
+        ansB += temp_productionb.getAllMoney();
+        count++;
+    }
+
+    while (!productionbs.empty())
+        productionbs.clear();
+
+    auto itemC = productioncs.begin();
+    while (itemC != productioncs.end()) {
+        auto &temp_productionc = itemC->second;
+        ansC += temp_productionc.getAllMoney();
+        count++;
+    }
+
+    while (!productioncs.empty())
+        productioncs.clear();
+
+    double ans = ansA + ansB + ansC;
+
+    cout << "You have delete all the production!" << endl;
+    cout << "In all : " << count << (count > 1 ? "productions..." : "producion...") << endl;
+    cout << "In all : " << ans << " money!" << endl;
+
 }
