@@ -34,7 +34,20 @@ private:
 
 };
 
+inline
+bool judge(std::string password) {
+    std::size_t len = password.length();
+    if (len != 6)
+        return false;
+    else {
+        for (char x : password) {
+            if (x > '9' || x < '0')
+                return false;
+        }
 
+        return true;
+    }
+}
 
 
 #endif //BANK_ACCOUNT_H
