@@ -37,7 +37,7 @@ public:
     void addProductionB(std::string productionName, double money);
     void addProductionC(std::string productionName, double money);
 
-    /*
+
     void getProductionByName(std::string productionName);
     void getProductionByClass(Production productionClass);
     void getAllProduction();
@@ -45,7 +45,7 @@ public:
     void deleteProductionByName(std::string productionName);
     void deleteProductionByClass(Production productionClass);
     void deleteAllProduction();
-    */
+
 
 private:
     std::string vipNumber;
