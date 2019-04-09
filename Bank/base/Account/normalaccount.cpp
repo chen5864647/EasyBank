@@ -11,6 +11,9 @@ using std::cerr;
 using std::endl;
 using std::cin;
 using std::cout;
+using std::list;
+
+list<string> NormalAccount::NormalUserNames;
 
 NormalAccount::NormalAccount(std::string userName, double money, unsigned int startYear, std::string password)
 : Account(userName, money, startYear, password) {
@@ -96,4 +99,21 @@ void NormalAccount::getAllMoney() {
     cout << allMoney << endl;
 
     this->money = 0;
+}
+
+inline
+string NormalAccount::getName() const {
+    return this->userName;
+}
+
+bool NormalAccount::judgeExist(string tempUserName) {
+    auto item = NormalAccount::NormalUserNames.begin();
+    while (item != NormalAccount::NormalUserNames.end()) {
+        if (*item == tempUserName)
+            return false;
+        else
+            ++item;
+    }
+
+    return true;
 }
