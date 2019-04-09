@@ -5,10 +5,12 @@
 #ifndef BANK_SURFACE_H
 #define BANK_SURFACE_H
 
-#include "../base/Account/vipaccount.h"
-#include "../base/Account/normalaccount.h"
 #include <iostream>
 #include <cassert>
+
+#include "../base/Account/vipaccount.h"
+#include "../base/Account/normalaccount.h"
+#include "func.h"
 
 class Surface {
 public:
@@ -28,14 +30,25 @@ public:
 
     void work();
 
+    void quit();
+
+    void createVipAccount();
+
+    void createNormalAccount();
+
+    void loginAccount();
+
+    void deleteVipAccount();
+
+    void deleteNormalAccount();
+
 private:
-    unsigned int width;
-    unsigned int height;
+    unsigned int width = 40;
+    unsigned int height = 20;
 
     bool _setWidth(unsigned int newWidth);
     bool _setHeight(unsigned int newHeight);
 
 };
-
 
 #endif //BANK_SURFACE_H
