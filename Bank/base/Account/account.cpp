@@ -49,3 +49,8 @@ bool Account::_setPassword(std::string newPassword) {
     else
         return false;
 }
+
+inline
+std::string Account::getName() const {
+    return this->userName;
+}
