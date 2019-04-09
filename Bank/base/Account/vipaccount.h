@@ -6,6 +6,7 @@
 #define BANK_VIPACCOUNT_H
 
 #include <memory>
+#include <list>
 #include <map>
 
 #include "account.h"
@@ -16,7 +17,13 @@ enum Production {
     ProdC = 3
 };
 
+class VipAccount;
+
+void saver(const VipAccount &vipacc);
+
 class VipAccount : public Account {
+    friend void saver(const VipAccount &vipacc);
+
 public:
 
     VipAccount(std::string userName, double money, unsigned int startYear,
@@ -29,7 +36,6 @@ public:
     void setPassword(std::string newPassword);
 
     void setVipNumber(std::string newVipNumber);
-
 
     void addProduction(std::string productionName, double money, Production productionClass);
 
@@ -46,6 +52,11 @@ public:
     void deleteProductionByClass(Production productionClass);
     void deleteAllProduction();
 
+    std::string getName() const override ;
+
+    static std::list<std::string> VipUserNames;
+
+    static bool judgeExist(std::string tempUserName);
 
 private:
     std::string vipNumber;
