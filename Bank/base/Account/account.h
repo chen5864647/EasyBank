@@ -19,6 +19,8 @@ public:
 
     virtual void setPassword(std::string newPassword);
 
+    virtual std::string getName() const;
+
 protected:
     std::string userName;
 
