@@ -19,6 +19,9 @@ using std::endl;
 using std::pair;
 using std::fill;
 using std::array;
+using std::list;
+
+list<string> VipAccount::VipUserNames;
 
 VipAccount::VipAccount(string userName,
         double money,
@@ -45,6 +48,8 @@ VipAccount::VipAccount(string userName,
     else
         this->ProductionCs.reset();
 
+    this->VipUserNames.emplace_back(userName);
+
 }
 
 void VipAccount::getAllMoney() {
@@ -59,6 +64,7 @@ void VipAccount::getAllMoney() {
     while (itemA != waitProfitAndMoneyA.end()) {
         ProductionA temp = itemA->second;
         ansMoneyA += temp.getAllMoney();
+        ++itemA;
     }
 
     auto waitProfitAndMoneyB = *(this->ProductionBs);
@@ -71,6 +77,7 @@ void VipAccount::getAllMoney() {
     while (itemB != waitProfitAndMoneyB.end()) {
         ProductionB temp = itemB->second;
         ansMoneyB += temp.getAllMoney();
+        ++itemB;
     }
 
     auto waitProfitAndMoneyC = *(this->ProductionCs);
@@ -83,6 +90,7 @@ void VipAccount::getAllMoney() {
     while (itemC != waitProfitAndMoneyC.end()) {
         ProductionC temp = itemC->second;
         ansMoneyC += temp.getAllMoney();
+        ++itemC;
     }
 
     auto ansMoney = ansMoneyA + ansMoneyB + ansMoneyC;
@@ -147,6 +155,15 @@ VipAccount::~VipAccount() {
             cout << "You have gotten your money!" << endl;
             this->getAllMoney();
         }
+    }
+
+    auto listItem = this->VipUserNames.begin();
+    while (listItem != this->VipUserNames.end()) {
+        if (*listItem == this->userName) {
+            this->VipUserNames.erase(listItem);
+            break;
+        }
+        else ++listItem;
     }
 
     cout << "You delete your account!" << endl;
@@ -358,8 +375,10 @@ void VipAccount::getProductionByClass(Production productionClass) {
 
     if (productionClass == ProdA) {
         auto item = productionas.begin();
-        while (item != productionas.end())
+        while (item != productionas.end()) {
             ans_money += (item->second).getAllMoney();
+            ++item;
+        }
 
         count = productionas.size();
 
@@ -369,8 +388,10 @@ void VipAccount::getProductionByClass(Production productionClass) {
     }
     else if (productionClass == ProdB) {
         auto item = productionbs.begin();
-        while (item != productionbs.end())
+        while (item != productionbs.end()) {
             ans_money += (item->second).getAllMoney();
+            ++item;
+        }
 
         count = productionbs.size();
 
@@ -379,8 +400,10 @@ void VipAccount::getProductionByClass(Production productionClass) {
     }
     else if (productionClass == ProdC) {
         auto item = productioncs.begin();
-        while (item != productioncs.end())
+        while (item != productioncs.end()) {
             ans_money += (item->second).getAllMoney();
+            ++item;
+        }
 
         count = productioncs.size();
 
@@ -409,6 +432,7 @@ void VipAccount::getAllProduction() {
         auto &temp_productiona = itemA->second;
         ansA += temp_productiona.getAllMoney();
         count++;
+        ++itemA;
     }
 
     while (!productionas.empty())
@@ -419,6 +443,7 @@ void VipAccount::getAllProduction() {
         auto &temp_productionb = itemB->second;
         ansB += temp_productionb.getAllMoney();
         count++;
+        ++itemB;
     }
 
     while (!productionbs.empty())
@@ -429,6 +454,7 @@ void VipAccount::getAllProduction() {
         auto &temp_productionc = itemC->second;
         ansC += temp_productionc.getAllMoney();
         count++;
+        ++itemC;
     }
 
     while (!productioncs.empty())
@@ -457,6 +483,7 @@ void VipAccount::deleteProductionByName(string productionName) {
         auto &temp_productiona = itemA->second;
         ansA += temp_productiona.getAllMoney();
         count++;
+        ++itemA;
     }
 
     while (!productionas.empty())
@@ -467,6 +494,7 @@ void VipAccount::deleteProductionByName(string productionName) {
         auto &temp_productionb = itemB->second;
         ansB += temp_productionb.getAllMoney();
         count++;
+        ++itemB;
     }
 
     while (!productionbs.empty())
@@ -477,6 +505,7 @@ void VipAccount::deleteProductionByName(string productionName) {
         auto &temp_productionc = itemC->second;
         ansC += temp_productionc.getAllMoney();
         count++;
+        ++itemC;
     }
 
     while (!productioncs.empty())
@@ -506,6 +535,7 @@ void VipAccount::deleteProductionByClass(Production productionClass) {
             auto &temp_productiona = itemA->second;
             ansA += temp_productiona.getAllMoney();
             count++;
+            ++itemA;
         }
 
         while (!productionas.empty())
@@ -522,6 +552,7 @@ void VipAccount::deleteProductionByClass(Production productionClass) {
             auto &temp_productionb = itemB->second;
             ansB += temp_productionb.getAllMoney();
             count++;
+            ++itemB;
         }
 
         while (!productionbs.empty())
@@ -538,6 +569,7 @@ void VipAccount::deleteProductionByClass(Production productionClass) {
             auto &temp_productionc = itemC->second;
             ansC += temp_productionc.getAllMoney();
             count++;
+            ++itemC;
         }
 
         while (!productioncs.empty())
@@ -565,6 +597,7 @@ void VipAccount::deleteAllProduction() {
         auto &temp_productiona = itemA->second;
         ansA += temp_productiona.getAllMoney();
         count++;
+        ++itemA;
     }
 
     while (!productionas.empty())
@@ -575,6 +608,7 @@ void VipAccount::deleteAllProduction() {
         auto &temp_productionb = itemB->second;
         ansB += temp_productionb.getAllMoney();
         count++;
+        ++itemB;
     }
 
     while (!productionbs.empty())
@@ -585,6 +619,7 @@ void VipAccount::deleteAllProduction() {
         auto &temp_productionc = itemC->second;
         ansC += temp_productionc.getAllMoney();
         count++;
+        ++itemC;
     }
 
     while (!productioncs.empty())
@@ -596,4 +631,21 @@ void VipAccount::deleteAllProduction() {
     cout << "In all : " << count << (count > 1 ? "productions..." : "producion...") << endl;
     cout << "In all : " << ans << " money!" << endl;
 
+}
+
+inline
+string VipAccount::getName() const {
+    return this->userName;
+}
+
+bool VipAccount::judgeExist(std::string tempUserName) {
+    auto item = VipAccount::VipUserNames.begin();
+    while (item != VipAccount::VipUserNames.end()) {
+        if (*item == tempUserName)
+            return false;
+        else
+            ++item;
+    }
+
+    return true;
 }
